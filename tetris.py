@@ -140,7 +140,7 @@ class Piece(object):
         self.color = shape_colors[shapes.index(shape)]
         self.rotation = 0  # number from 0-3
 
-
+#Create grid for tetris gameplay.
 def create_grid(locked_positions={}):
     grid = [[(0,0,0) for x in range(10)] for x in range(20)]
 
@@ -151,7 +151,7 @@ def create_grid(locked_positions={}):
                 grid[i][j] = c
     return grid
 
-
+#Give pieces the ability to rotate, if the position they are rotating to is empty.
 def convert_shape_format(shape):
     positions = []
     format = shape.shape[shape.rotation % len(shape.shape)]
@@ -167,7 +167,7 @@ def convert_shape_format(shape):
 
     return positions
 
-
+#Define valid space within gameplay window, so that pieces don't go out of "bounds".
 def valid_space(shape, grid):
     accepted_positions = [[(j, i) for j in range(10) if grid[i][j] == (0,0,0)] for i in range(20)]
     accepted_positions = [j for sub in accepted_positions for j in sub]
@@ -201,7 +201,7 @@ def draw_text_middle(text, size, color, surface):
 
     surface.blit(label, (top_left_x + play_width/2 - (label.get_width() / 2), top_left_y + play_height/2 - label.get_height()/2))
 
-
+#Use pygame to draw the grid, 10 vertical and 20 horizontal.
 def draw_grid(surface, row, col):
     sx = top_left_x
     sy = top_left_y
@@ -211,6 +211,7 @@ def draw_grid(surface, row, col):
             pygame.draw.line(surface, (128,128,128), (sx + j * 30, sy), (sx + j * 30, sy + play_height))  # vertical lines
 
 
+#If there are no empty positions in a row then remove that row from gameplay, shifting the pieces downward 1 position.
 def clear_rows(grid, locked):
     # need to see if row is clear the shift every other row above down one
 
@@ -233,7 +234,7 @@ def clear_rows(grid, locked):
                 newKey = (x, y + inc)
                 locked[newKey] = locked.pop(key)
 
-
+#Use pygame to draw the next shape next to the grid.
 def draw_next_shape(shape, surface):
     font = pygame.font.SysFont('chalkduster', 25)
     label = font.render('Next Shape', 1, (255,255,255))
